@@ -1,6 +1,18 @@
 # Mercado | Catálogo de productos
 
-Mini app web desarrollada con HTML, CSS y JavaScript. Consulta productos desde la API pública [DummyJSON](https://dummyjson.com/docs/products), los muestra dinámicamente y permite filtrarlos por nombre, descripción o categoría.
+Mini aplicación web desarrollada para consultar y explorar productos desde una API pública. Utiliza HTML, CSS y JavaScript vanilla, con una interfaz responsive, búsqueda en tiempo real y validación automática mediante ESLint y Husky.
+
+## Descripción
+
+Mercado consume la API de productos de [DummyJSON](https://dummyjson.com/docs/products) usando `fetch`, transforma la respuesta en tarjetas visuales y permite filtrar el catálogo por nombre, descripción o categoría. También incluye estados de carga, error, búsqueda sin resultados y actualización manual.
+
+## Tecnologías
+
+- HTML5 y CSS3.
+- JavaScript vanilla y Fetch API.
+- DummyJSON como API pública.
+- ESLint para revisión de código.
+- Husky para ejecutar ESLint antes de cada commit.
 
 ## Requisitos
 
@@ -15,7 +27,7 @@ npm install
 npx husky init
 ```
 
-El comando `npx husky init` crea la carpeta `.husky` y configura el script `prepare` de `package.json`. En este proyecto, el hook `.husky/pre-commit` ejecuta `npm run lint` antes de cada commit.
+El comando `npx husky init` crea la carpeta `.husky` y configura el script `prepare` de `package.json`. Después, verifica que `.husky/pre-commit` contenga exactamente `npm run lint`; algunas versiones de Husky generan inicialmente `npm test`, pero este proyecto no tiene ese script. El hook debe ejecutar `npm run lint` antes de cada commit.
 
 ## Ejecución
 
@@ -27,13 +39,21 @@ npx serve .
 
 Después visita la URL que indique el servidor.
 
-## Comandos de calidad
+## ESLint y Husky
 
 ```bash
 npm run lint
 ```
 
-El lint comprueba `script.js` y la configuración JavaScript. Husky ejecuta este mismo comando automáticamente durante `git commit`; si hay errores de ESLint, el commit se detiene.
+El lint comprueba el código JavaScript. Husky ejecuta este mismo comando automáticamente durante `git commit`; si hay errores de ESLint, el commit se detiene.
+
+Después de ejecutar `npx husky init`, verifica que [.husky/pre-commit](.husky/pre-commit) contenga exactamente:
+
+```text
+npm run lint
+```
+
+Algunas versiones de Husky generan inicialmente `npm test`; este proyecto no tiene ese script, por lo que debe reemplazarse por `npm run lint`.
 
 ## API y funcionalidades
 
@@ -53,11 +73,12 @@ git commit -m "feat: create products api app"
 
 El commit se realizará únicamente si el hook de Husky y ESLint terminan correctamente.
 
-## Capturas que debes entregar
+## Evidencias
 
-1. **Funcionamiento inicial:** abre la app con varios productos visibles. Captura la página completa mostrando el título, las tarjetas cargadas y el contador de resultados.
-2. **Interacción:** escribe una palabra como `phone` o `laptop` en el buscador y captura el resultado filtrado junto con el contador actualizado.
-3. **Hook de Husky funcionando:** en la terminal ejecuta `git commit -m "test: verify husky"` con el proyecto correcto y captura la salida donde aparezca `npm run lint` y el commit exitoso.
-4. **Husky bloqueando errores:** agrega temporalmente una línea con un error de ESLint en `script.js`, por ejemplo `const unusedValue = 1;`, intenta hacer commit y captura la terminal donde ESLint reporte el error y el commit sea rechazado. Después elimina esa línea y verifica de nuevo con `npm run lint`.
+1. Captura de la aplicación con varios productos cargados y el contador de resultados visible.
+2. Captura del buscador filtrando productos, por ejemplo `phone` o `laptop`.
+3. Captura de la terminal mostrando `npm run lint` y un commit exitoso.
+4. Captura de la terminal mostrando ESLint rechazando un commit por una variable sin utilizar.
 
-No es necesario capturar la instalación de dependencias; las evidencias importantes son la app funcionando, el filtro y la validación del hook.
+Para probar el bloqueo, agrega temporalmente `const unusedValue = 1;` en `script.js`, ejecuta `git add script.js` y realiza un commit. Después elimina esa línea y ejecuta `npm run lint` para dejar el proyecto limpio.
+
